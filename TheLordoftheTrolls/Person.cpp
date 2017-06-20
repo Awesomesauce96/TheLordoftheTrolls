@@ -7,3 +7,9 @@
 #include "GeneralFunctions.h"
 #include "Person.h"
 
+Person::Person(std::string name, long hp) :
+	m_name{ name }, m_healthPoints{ hp }
+{
+
+}
+
