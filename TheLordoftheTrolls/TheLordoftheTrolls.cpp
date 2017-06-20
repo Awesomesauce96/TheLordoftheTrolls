@@ -8,6 +8,9 @@
 
 // awesome headers
 #include "GeneralFunctions.h"
+#include "Person.h"
+#include "Player.h"
+
 
 int main()
 {
@@ -15,7 +18,11 @@ int main()
 	srand(static_cast<unsigned int>(time(0)));
 
 	
-
+	Player currentPlayer;
+	
+	currentPlayer.printPlayerInfo();
+	currentPlayer.addExperience(1000);
+	currentPlayer.printPlayerInfo();
 
 	promtBeforeExit();
     return 0;

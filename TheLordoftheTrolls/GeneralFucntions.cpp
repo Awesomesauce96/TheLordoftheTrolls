@@ -6,6 +6,7 @@ foward declarations go in the GeneralFunctions.h header file
 
 // essential stl headers
 #include "stdafx.h"
+#include "stdafx.h"
 #include <iostream>
 #include <string>
 #include <random>
@@ -13,8 +14,10 @@ foward declarations go in the GeneralFunctions.h header file
 
 // awesome headers
 #include "GeneralFunctions.h"
+#include "Person.h"
 
 
+// welcome message displayed at the start of the program and only there
 void printWelcomeMessage()
 {
 	std::cout << "# # # # # # # # # # # # # # # #\n";
@@ -27,6 +30,31 @@ void printWelcomeMessage()
 	std::cout << "# # # # # # # # # # # # # # # #\n";
 }
 
+// actual game funcetions
+bool doYouWantToPlay()
+{
+	while (true)
+	{
+		char playAnswer;
+		std::cin >> playAnswer;
+		if (std::cin.fail())
+		{
+			cinFailHandling();
+			continue;
+		}
+		else if (playAnswer == 'y')
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}
+
+
+// random Number generators and printers
 int getRandomNumber(int min, int max)
 {
 	static const double fraction = 1.0 / (static_cast<double>(RAND_MAX) + 1.0);
@@ -49,7 +77,6 @@ bool getRandomPercent(int percent)
 	}
 }
 
-
 void printRandomNumbers()
 {
 	for (int supcount = 0; supcount < 10; ++supcount)
@@ -62,7 +89,15 @@ void printRandomNumbers()
 	}
 }
 
+// ERROR HANDLING
+void cinFailHandling()
+{
+	std::cin.clear();
+	std::cin.ignore(32767, '\n');
+	std::cout << "Oops, something went wrong!\n";
+}
 
+// TO BE DELETED, simple function to prevent the program from exiting
 void promtBeforeExit()
 {
 	int x;
