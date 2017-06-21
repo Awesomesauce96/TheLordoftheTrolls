@@ -32,12 +32,19 @@ long Person::returnDamagePoints()
 
 void Person::subHealthPoints(long damage)
 {
-	m_healthPoints = m_healthPoints - damage;
-	std::cout << m_name << " has lost " << damage << " health!\n";
+	if (m_healthPoints <= damage)
+	{
+		die();
+	}
+	else
+	{
+		m_healthPoints = m_healthPoints - damage;
+		std::cout << m_name << " has lost " << damage << " health!\n";
+	}
 }
 
 void Person::die()
 {
 	m_alive = false;
-	std::cout << m_name << " has been slain!";
+	std::cout << m_name << " died!\n";
 }

@@ -15,7 +15,8 @@ foward declarations go in the GeneralFunctions.h header file
 // awesome headers
 #include "GeneralFunctions.h"
 #include "Person.h"
-
+#include "Player.h"
+#include "Monster.h"
 
 // welcome message displayed at the start of the program and only there
 void printWelcomeMessage()
@@ -33,6 +34,7 @@ void printWelcomeMessage()
 // actual game funcetions
 bool doYouWantToPlay()
 {
+	std::cout << "Do you want to play? y - for yes. All other character's to exit.\n";
 	while (true)
 	{
 		char playAnswer;
@@ -44,6 +46,7 @@ bool doYouWantToPlay()
 		}
 		else if (playAnswer == 'y')
 		{
+			std::cin.ignore(32767, '\n');
 			return true;
 		}
 		else
@@ -51,6 +54,123 @@ bool doYouWantToPlay()
 			return false;
 		}
 	}
+}
+
+void playGame()
+{
+	printWelcomeMessage();
+	while (doYouWantToPlay())
+	{
+		Player currentPlayer;
+		pickAnAction(currentPlayer);
+	}
+}
+
+void pickAnAction(Player &actionPlayer)
+{
+	while (actionPlayer.returnAlive())
+	{
+		std::cout << "Pick an action with a single letter! h - help!\n";
+		char action;
+		std::cin >> action;
+		
+		if (std::cin.fail())
+		{
+			cinFailHandling();
+			continue;
+		}
+		
+		std::cin.ignore(32767, '\n');
+
+		switch (action)
+		{
+			default:
+				std::cout << "That was not a valid action!\n";
+				break;
+			case 'h':
+				printPickActionOptions();
+				break;
+			case 'o':
+				actionPlayer.die();
+				break;
+			case 'p':
+				actionPlayer.printPlayerInfo();
+				break;
+			case 'e':
+				actionPlayer.addExperience(100);
+				break;
+			case 's':
+				actionPlayer.subHealthPoints(50);
+				break;
+			case 'f':
+				Monster currentMonster(actionPlayer.returnLevel());
+				playerMonsterFight(actionPlayer, currentMonster);
+				break;
+		}
+	}
+}
+
+void printPickActionOptions()
+{
+	std::cout << "h - will show you this menu.\n";
+	std::cout << "o - will suicide your character.\n";
+	std::cout << "p - will print your character's information.\n";
+	std::cout << "e - will add 100 experience.\n";
+	std::cout << "s - will remove 50 health points.\n";
+	std::cout << "f - will find a random enemy monster to fight.\n";
+}
+
+// fight functions
+
+void playerMonsterFight(Player &fightPlayer, Monster &fightMonster)
+{
+	while (fightPlayer.returnAlive() && fightMonster.returnAlive())
+	{
+		std::cout << "You are in combat! What will you do?!\n";
+		char fightAction;
+		std::cin >> fightAction;
+
+		if (std::cin.fail())
+		{
+			cinFailHandling();
+			continue;
+		}
+
+		std::cin.ignore(32767, '\n');
+		
+		switch (fightAction)
+		{
+			default:
+				std::cout << "That was not a valid action!\n";
+				break;
+			case 'a':
+				fightPlayer.subHealthPoints(fightMonster.returnDamagePoints());
+				fightMonster.subHealthPoints(fightPlayer.returnDamagePoints());
+				break;
+			case 'd':
+				fightMonster.printMonsterInfo();
+				break;
+			case 'p':
+				fightPlayer.printPlayerInfo();
+				break;
+			case 'h':
+				printFightOptions();
+				break;
+		}
+		if (!fightMonster.returnAlive())
+		{
+			std::cout << "You are victorious!\n";
+			fightPlayer.addExperience(fightMonster.returnGiveExperience());
+		}
+	}
+}
+
+void printFightOptions()
+{
+	std::cout << "h - will show you this menu.\n";
+	std::cout << "a - will attack your enemy.\n";
+	std::cout << "d - will print monster info.\n";
+	std::cout << "p - will print your character's info.\n";
 }
 
 

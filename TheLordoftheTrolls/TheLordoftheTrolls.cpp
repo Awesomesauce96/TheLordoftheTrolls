@@ -1,5 +1,9 @@
-// TheLordoftheTrolls.cpp : Defines the entry point for the console application.
-//
+/*TheLordoftheTrolls.cpp : Defines the entry point for the console application.
+
+# # # # # # # # # # # # # # # # # 
+# # Written by: Awesomesauce  # #
+# # # # # # # # # # # # # # # # #
+*/
 
 #include "stdafx.h"
 #include <random>
@@ -14,17 +18,10 @@
 
 int main()
 {
-	printWelcomeMessage();
 	srand(static_cast<unsigned int>(time(0)));
 
-	
-	Player currentPlayer;
-	
-	currentPlayer.printPlayerInfo();
-	currentPlayer.addExperience(1000);
-	currentPlayer.printPlayerInfo();
+	playGame();
 
-	promtBeforeExit();
     return 0;
 }
 
