@@ -9,12 +9,13 @@
 #include "GeneralFunctions.h"
 
 
-Player::Player() : 
-	m_experience{ 100 }, m_maxExperience{ 100 }
+Player::Player() :
+	m_experience{ 100 }, m_maxExperience{ 100 }, m_potion(1, 5)
 {
 	Person::m_name = getPlayerName();
 	m_class = getPlayerClass();
 
+	
 	switch (m_class)
 	{
 		case PLAYERCLASS_WARRIOR:
@@ -22,18 +23,21 @@ Player::Player() :
 			m_classWeapon = "Great-Sword";
 			Person::m_healthPoints = 200;
 			Person::m_damagePoints = 10;
+			Person::m_maxDamagePoints = 12;
 			break;
 		case PLAYERCLASS_ROGUE:
 			m_className = "Rogue";
 			m_classWeapon = "Daggers";
 			Person::m_healthPoints = 170;
 			Person::m_damagePoints = 13;
+			Person::m_maxDamagePoints = 15;
 			break;
 		case PLAYERCLASS_MAGE:
 			m_className = "Mage";
 			m_classWeapon = "Fireball";
 			Person::m_healthPoints = 150;
 			Person::m_damagePoints = 15;
+			Person::m_maxDamagePoints = 17;
 			break;
 	}
 
@@ -104,8 +108,10 @@ void Player::printPlayerInfo()
 	std::cout << "Class: " << m_className << ".\n";
 	std::cout << "Level: " << Person::m_level << ".\n";
 	std::cout << "Health: " << Person::m_healthPoints << ".\n";
-	std::cout << "Damage with " << m_classWeapon << ": " << Person::m_damagePoints << ".\n";
+	std::cout << "Damage with " << m_classWeapon << ": " << Person::m_damagePoints << " to " <<
+		m_maxDamagePoints << ".\n";
 	std::cout << "You need: " << m_experience << " experience to level up!\n";
+	std::cout << "Health Potions: " << m_potion.returnQuantity() << ".\n";
 }
 
 void Player::levelUp()
@@ -113,9 +119,11 @@ void Player::levelUp()
 	Person::m_level = Person::m_level + 1;
 	Person::m_maxHealthPoints = Person::m_maxHealthPoints * Person::m_level;
 	Person::m_damagePoints = Person::m_damagePoints * Person::m_level;
+	m_maxDamagePoints = m_maxDamagePoints * m_level;
 	Person::m_healthPoints = Person::m_maxHealthPoints;
 	m_maxExperience = m_maxExperience * m_level;
 	m_experience = m_maxExperience;
+	m_potion.upgradePotion(returnLevel());
 	std::cout << "Congratulations, you leveled up!\n";
 }
 
@@ -137,3 +145,55 @@ void Player::addExperience(long experience)
 		m_experience = m_experience - experience;
 	}
 }
+
+void Player::drinkPotion()
+{
+	m_potion.removeOnePotion();
+
+	long aftermathHealth = m_healthPoints + m_potion.returnGiveHealth();
+
+	if (aftermathHealth > m_maxHealthPoints)
+	{
+		m_healthPoints = m_maxHealthPoints;
+	}
+	else
+	{
+		m_healthPoints = aftermathHealth;
+	}
+
+	std::cout << "You now have " << m_potion.returnQuantity() << " health potions.\n";
+}
+
+void Player::rewardPotion()
+{
+	if (getRandomPercent(1))
+	{
+		m_potion.addPotionQuantity(3);
+	}
+	else if (getRandomPercent(10))
+	{
+		m_potion.addPotionQuantity(2);
+	}
+	else if (getRandomPercent(50))
+	{
+		m_potion.addPotionQuantity(1);
+	}
+	else
+	{
+		std::cout << "You were not rewarded any potions.\n";
+	}
+
+	std::cout << "You now have " << m_potion.returnQuantity() << " health potions.\n";
+}
+
+// overwrite function Person::returnDamagePoints
+long Player::returnDamagePoints()
+{
+	long currentDamage = getRandomNumber(m_damagePoints, m_maxDamagePoints);
+	
+	std::cout << "You dealt " << currentDamage <<
+		" damage with your " << m_classWeapon << "!\n";
+	
+	return currentDamage;
+}
+

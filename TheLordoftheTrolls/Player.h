@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Person.h"
-
+#include "HealthPotion.h"
 
 class Player : public Person
 {
@@ -10,6 +10,7 @@ class Player : public Person
 	int m_class;
 	std::string m_className;
 	std::string m_classWeapon;
+	Potion m_potion;
 
 public:
 	Player();
@@ -19,6 +20,9 @@ public:
 	void Player::printPlayerInfo();
 	void Player::levelUp();
 	void Player::addExperience(long experience);
+	long Player::returnDamagePoints();
+	void Player::drinkPotion();
+	void Player::rewardPotion();
 };
 
 

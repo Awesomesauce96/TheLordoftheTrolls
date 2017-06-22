@@ -27,19 +27,39 @@ bool Person::returnAlive()
 
 long Person::returnDamagePoints()
 {
-	return m_damagePoints;
+	long currentDamage = getRandomNumber(m_damagePoints, m_maxDamagePoints);
+	
+	std::cout << m_name << " dealt " << currentDamage <<
+		" damage!\n";
+	return currentDamage;
 }
 
 void Person::subHealthPoints(long damage)
 {
 	if (m_healthPoints <= damage)
 	{
+		std::cout << m_name << " has lost " << damage << " health!\n";
 		die();
 	}
 	else
 	{
 		m_healthPoints = m_healthPoints - damage;
 		std::cout << m_name << " has lost " << damage << " health!\n";
+	}
+}
+
+void Person::addHealthPoints(long giveHealth)
+{
+	std::cout << "You gained " << giveHealth << " health!\n";
+	long aftermathHealth = m_healthPoints + giveHealth;
+
+	if (aftermathHealth > m_maxHealthPoints)
+	{
+		m_healthPoints = m_maxHealthPoints;
+	}
+	else
+	{
+		m_healthPoints = aftermathHealth;
 	}
 }
 

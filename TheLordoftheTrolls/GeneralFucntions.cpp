@@ -96,16 +96,16 @@ void pickAnAction(Player &actionPlayer)
 			case 'p':
 				actionPlayer.printPlayerInfo();
 				break;
-			case 'e':
-				actionPlayer.addExperience(100);
-				break;
-			case 's':
-				actionPlayer.subHealthPoints(50);
-				break;
 			case 'f':
+			{
 				Monster currentMonster(actionPlayer.returnLevel());
 				playerMonsterFight(actionPlayer, currentMonster);
 				break;
+			}
+			case 'u':
+				actionPlayer.drinkPotion();
+				break;
+
 		}
 	}
 }
@@ -115,9 +115,8 @@ void printPickActionOptions()
 	std::cout << "h - will show you this menu.\n";
 	std::cout << "o - will suicide your character.\n";
 	std::cout << "p - will print your character's information.\n";
-	std::cout << "e - will add 100 experience.\n";
-	std::cout << "s - will remove 50 health points.\n";
 	std::cout << "f - will find a random enemy monster to fight.\n";
+	std::cout << "u - will drink a health potion.\n";
 }
 
 // fight functions
@@ -156,11 +155,16 @@ void playerMonsterFight(Player &fightPlayer, Monster &fightMonster)
 			case 'h':
 				printFightOptions();
 				break;
+			case 'u':
+				fightPlayer.drinkPotion();
+				fightPlayer.subHealthPoints(fightMonster.returnDamagePoints());
+				break;
 		}
 		if (!fightMonster.returnAlive())
 		{
 			std::cout << "You are victorious!\n";
 			fightPlayer.addExperience(fightMonster.returnGiveExperience());
+			fightPlayer.rewardPotion();
 		}
 	}
 }
@@ -171,14 +175,15 @@ void printFightOptions()
 	std::cout << "a - will attack your enemy.\n";
 	std::cout << "d - will print monster info.\n";
 	std::cout << "p - will print your character's info.\n";
+	std::cout << "u - will drink a health potion.\n";
 }
 
 
 // random Number generators and printers
-int getRandomNumber(int min, int max)
+int getRandomNumber(long min, long max)
 {
 	static const double fraction = 1.0 / (static_cast<double>(RAND_MAX) + 1.0);
-	return static_cast<int>(rand() * fraction * (max - min + 1) + min);
+	return static_cast<long>(rand() * fraction * (max - min + 1) + min);
 }
 
 bool getRandomPercent(int percent)
@@ -187,12 +192,10 @@ bool getRandomPercent(int percent)
 	
 	if (randNumber <= percent)
 	{
-		std::cout << "SUCCESS!!\n";
 		return true;
 	}
 	else
 	{
-		std::cout << "FAIL!\n";
 		return false;
 	}
 }

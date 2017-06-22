@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneralFunctions.h" />
+    <ClInclude Include="HealthPotion.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Person.h" />
     <ClInclude Include="Player.h" />
@@ -147,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneralFucntions.cpp" />
+    <ClCompile Include="HealthPotion.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Person.cpp" />
     <ClCompile Include="Player.cpp" />

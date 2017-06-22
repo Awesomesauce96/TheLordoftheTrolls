@@ -8,6 +8,7 @@ protected:
 	long m_healthPoints;
 	long m_maxHealthPoints;
 	long m_damagePoints;
+	long m_maxDamagePoints;
 	int m_level;
 
 private:
@@ -20,6 +21,7 @@ public:
 	bool Person::returnAlive();
 	long Person::returnDamagePoints();
 	void Person::subHealthPoints(long damage);
+	void Person::addHealthPoints(long giveHealth);
 	void Person::die();
 
 };

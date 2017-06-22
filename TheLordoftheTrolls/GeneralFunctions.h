@@ -6,7 +6,7 @@
 
 void printWelcomeMessage();
 void promtBeforeExit();
-int getRandomNumber(int min, int max);
+int getRandomNumber(long min, long max);
 void printRandomNumbers();
 bool getRandomPercent(int percent);
 void cinFailHandling();
