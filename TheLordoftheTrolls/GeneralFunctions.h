@@ -16,3 +16,5 @@ void pickAnAction(Player &actionPlayer);
 void playGame();
 void playerMonsterFight(Player &fightPlayer, Monster &fightMonster);
 void printFightOptions();
+
+void initiateSpells(Player * spellPlayer);

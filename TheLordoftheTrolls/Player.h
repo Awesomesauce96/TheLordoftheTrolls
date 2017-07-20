@@ -2,6 +2,8 @@
 
 #include "Person.h"
 #include "HealthPotion.h"
+#include "Spells.h"
+#include <vector>
 
 class Player : public Person
 {
@@ -11,6 +13,8 @@ class Player : public Person
 	std::string m_className;
 	std::string m_classWeapon;
 	Potion m_potion;
+	std::vector<Spell*> m_spells;
+
 
 public:
 	Player();
@@ -23,6 +27,11 @@ public:
 	long Player::returnDamagePoints();
 	void Player::drinkPotion();
 	void Player::rewardPotion();
+	void Player::addSpell(Spell *spellName);
+	int Player::returnClass();
+	void Player::printSpells();
+	long Player::returnDamagePointsSpell();
+	int Player::returnSpellsLength();
 };
 
 

@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include <iostream>
 #include <string>
-
+#include <vector>
 
 // awesome headers
 #include "Person.h"
 #include "Player.h"
 #include "GeneralFunctions.h"
-
+#include "Spells.h"
 
 Player::Player() :
 	m_experience{ 100 }, m_maxExperience{ 100 }, m_potion(1, 5)
@@ -197,3 +197,69 @@ long Player::returnDamagePoints()
 	return currentDamage;
 }
 
+void Player::addSpell(Spell *spellName)
+{
+	m_spells.push_back(spellName);
+}
+
+
+int Player::returnClass()
+{
+	return m_class;
+}
+
+void Player::printSpells()
+{
+	if (m_spells[0] == 0)
+		return;
+
+	for (unsigned int iii = 0; iii < m_spells.size(); ++iii)
+	{
+		std::cout << iii << " - ";
+		m_spells.at(iii)->printSpell(m_level);
+	}
+}
+
+
+long Player::returnDamagePointsSpell()
+{
+	while (true)
+	{
+		std::cout << "Enter the id of the spells you want to use! -1 - shows current spells. -2 - cancel.\n";
+
+		int getSpell;
+		std::cin >> getSpell;
+
+		if (std::cin.fail())
+		{
+			cinFailHandling();
+		}
+		std::cin.ignore(32767, '\n');
+
+		if (getSpell == -1)
+		{
+			printSpells();
+			continue;
+		}
+		if (getSpell == -2)
+		{
+			std::cout << "You canceled spellcasting and did no damage!\n";
+			return 0;
+		}
+		if (getSpell >= 0 && getSpell < returnSpellsLength())
+		{
+			long spellDmg = m_spells.at(getSpell)->returnDamage(m_level);
+			return spellDmg;
+		}
+		else
+		{
+			continue;
+		}
+	}
+}
+
+int Player::returnSpellsLength()
+{
+	int length = m_spells.size();
+	return length;
+}

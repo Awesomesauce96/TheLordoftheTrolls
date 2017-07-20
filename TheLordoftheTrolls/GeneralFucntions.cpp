@@ -17,6 +17,7 @@ foward declarations go in the GeneralFunctions.h header file
 #include "Person.h"
 #include "Player.h"
 #include "Monster.h"
+#include "Spells.h"
 
 // welcome message displayed at the start of the program and only there
 void printWelcomeMessage()
@@ -62,6 +63,8 @@ void playGame()
 	while (doYouWantToPlay())
 	{
 		Player currentPlayer;
+		Player *pointerPlayer = &currentPlayer;
+		initiateSpells(pointerPlayer);
 		pickAnAction(currentPlayer);
 	}
 }
@@ -105,7 +108,9 @@ void pickAnAction(Player &actionPlayer)
 			case 'u':
 				actionPlayer.drinkPotion();
 				break;
-
+			case 't':
+				actionPlayer.printSpells();
+				break;
 		}
 	}
 }
@@ -117,6 +122,7 @@ void printPickActionOptions()
 	std::cout << "p - will print your character's information.\n";
 	std::cout << "f - will find a random enemy monster to fight.\n";
 	std::cout << "u - will drink a health potion.\n";
+	std::cout << "t - will print your current spells\n";
 }
 
 // fight functions
@@ -159,6 +165,13 @@ void playerMonsterFight(Player &fightPlayer, Monster &fightMonster)
 				fightPlayer.drinkPotion();
 				fightPlayer.subHealthPoints(fightMonster.returnDamagePoints());
 				break;
+			case 't':
+				fightPlayer.printSpells();
+				break;
+			case 'r':
+				fightMonster.subHealthPoints(fightPlayer.returnDamagePointsSpell());
+				fightPlayer.subHealthPoints(fightMonster.returnDamagePoints());
+				break;
 		}
 		if (!fightMonster.returnAlive())
 		{
@@ -176,6 +189,7 @@ void printFightOptions()
 	std::cout << "d - will print monster info.\n";
 	std::cout << "p - will print your character's info.\n";
 	std::cout << "u - will drink a health potion.\n";
+	std::cout << "t - will print your current spells\n";
 }
 
 
@@ -226,3 +240,42 @@ void promtBeforeExit()
 	int x;
 	std::cin >> x;
 }
+
+
+// Spell initialising
+
+void initiateSpells(Player * spellPlayer)
+{
+	Spell *mortalStrike = new Spell(1, PLAYERCLASS_WARRIOR, "Mortal Strike", 15);
+	Spell *relentlessStrike = new Spell(2, PLAYERCLASS_WARRIOR, "Relentless Attack", 20);
+	Spell *viciousSlam = new Spell(3, PLAYERCLASS_WARRIOR, "Vicious Slam", 25);
+	Spell *cunningStrike = new Spell(4, PLAYERCLASS_ROGUE, "Cunning Strike", 20);
+	Spell *backstab = new Spell(5, PLAYERCLASS_ROGUE, "Backstab", 25);
+	Spell *kidneyShot = new Spell(6, PLAYERCLASS_ROGUE, "Kindney Shot", 30);
+	Spell *frostSpike = new Spell(7, PLAYERCLASS_MAGE, "Frost Spike", 25);
+	Spell *arcaneBlast = new Spell(8, PLAYERCLASS_MAGE, "Arcane Blast", 30);
+	Spell *pyroblast = new Spell(9, PLAYERCLASS_MAGE, "Pyroblast", 35);
+
+
+	int playerClass = spellPlayer->returnClass();
+
+	switch (playerClass)
+	{
+	case PLAYERCLASS_WARRIOR:
+		spellPlayer->addSpell(mortalStrike);
+		spellPlayer->addSpell(relentlessStrike);
+		spellPlayer->addSpell(viciousSlam);
+		break;
+	case PLAYERCLASS_ROGUE:
+		spellPlayer->addSpell(cunningStrike);
+		spellPlayer->addSpell(backstab);
+		spellPlayer->addSpell(kidneyShot);
+		break;
+	case PLAYERCLASS_MAGE:
+		spellPlayer->addSpell(frostSpike);
+		spellPlayer->addSpell(arcaneBlast);
+		spellPlayer->addSpell(pyroblast);
+		break;
+	}
+}
+
